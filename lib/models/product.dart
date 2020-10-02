@@ -1,10 +1,12 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:loja_virtual/models/item_size.dart';
-import 'dart:io';
-import 'item_size.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
+
+import 'item_size.dart';
 
 class Product extends ChangeNotifier {
   Product({this.id, this.name, this.description, this.images, this.sizes}) {
@@ -26,8 +28,8 @@ class Product extends ChangeNotifier {
   final FirebaseStorage storage = FirebaseStorage.instance;
 
   DocumentReference get firestoreRef => firestore.document('products/$id');
-
   StorageReference get storageRef => storage.ref().child('products').child(id);
+
   String id;
   String name;
   String description;
@@ -36,19 +38,14 @@ class Product extends ChangeNotifier {
   List<dynamic> newImages;
 
   bool _loading = false;
-
   bool get loading => _loading;
-
   set loading(bool value) {
     _loading = value;
     notifyListeners();
   }
 
-  ItemSize _itemSize;
   ItemSize _selectedSize;
-
   ItemSize get selectedSize => _selectedSize;
-
   set selectedSize(ItemSize value) {
     _selectedSize = value;
     notifyListeners();
@@ -69,7 +66,9 @@ class Product extends ChangeNotifier {
   num get basePrice {
     num lowest = double.infinity;
     for (final size in sizes) {
-      if (size.price < lowest && size.hasStock) lowest = size.price;
+      if (size.price < lowest && size.hasStock) {
+        lowest = size.price;
+      }
     }
     return lowest;
   }

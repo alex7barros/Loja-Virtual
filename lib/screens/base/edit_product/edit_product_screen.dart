@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/product.dart';
 import 'package:loja_virtual/models/product_manager.dart';
 import 'package:provider/provider.dart';
-
 import 'components/images_form.dart';
 import 'components/sizes_form.dart';
 
 
 class EditProductScreen extends StatelessWidget {
 
-  EditProductScreen(Product p)
-      :
+  EditProductScreen(Product p):
         editing = p != null,
         product = p != null ? p.clone() : Product();
 
@@ -22,8 +20,7 @@ class EditProductScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme
-        .of(context)
-        .primaryColor;
+        .of(context).primaryColor;
     return  ChangeNotifierProvider.value(
       value: product,
       child: Scaffold(

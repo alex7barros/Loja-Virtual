@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:loja_virtual/models/section.dart';
 
 class HomeManager extends ChangeNotifier {
+
   HomeManager() {
     _loadSections();
   }
 
   final List<Section> _sections = [];
-
   List<Section> _editingSections = [];
 
 
