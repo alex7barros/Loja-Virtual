@@ -11,13 +11,15 @@ import 'package:loja_virtual/screens/checkout/checkout_screen.dart';
 import 'package:loja_virtual/screens/confirmation/confirmation_screen.dart';
 import 'package:loja_virtual/screens/select_product/select_product_screen.dart';
 import 'package:provider/provider.dart';
-import 'models/order.dart';
-import 'models/orders_manager.dart';
-import 'screens/address/address_screen.dart';
+
+import 'models/admin_orders_manager.dart';
 import 'models/admin_users_manager.dart';
 import 'models/cart_manager.dart';
 import 'models/home_manager.dart';
+import 'models/order.dart';
+import 'models/orders_manager.dart';
 import 'models/user_manager.dart';
+import 'screens/address/address_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -58,6 +60,14 @@ class MyApp extends StatelessWidget {
           lazy: false,
           update: (_, userManager, adminUsersManager) =>
           adminUsersManager..updateUser(userManager),
+        ),
+        ChangeNotifierProxyProvider<UserManager, AdminOrdersManager>(
+          create: (_) => AdminOrdersManager(),
+          lazy: false,
+          update: (_, userManager, adminOrdersManager) =>
+          adminOrdersManager..updateAdmin(
+              adminEnabled: userManager.adminEnabled
+          ),
         )
       ],
       child: MaterialApp(
