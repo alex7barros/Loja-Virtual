@@ -10,6 +10,7 @@ import 'package:loja_virtual/screens/base/signup/signup_screen.dart';
 import 'package:loja_virtual/screens/checkout/checkout_screen.dart';
 import 'package:loja_virtual/screens/select_product/select_product_screen.dart';
 import 'package:provider/provider.dart';
+import 'models/orders_manager.dart';
 import 'screens/address/address_screen.dart';
 import 'models/admin_users_manager.dart';
 import 'models/cart_manager.dart';
@@ -43,6 +44,12 @@ class MyApp extends StatelessWidget {
           lazy: false,
           update: (_, userManager, cartManager) =>
           cartManager..updateUser(userManager),
+        ),
+        ChangeNotifierProxyProvider<UserManager, OrdersManager>(
+          create: (_) => OrdersManager(),
+          lazy: false,
+          update: (_, userManager, ordersManager) =>
+          ordersManager..updateUser(userManager.user),
         ),
         ChangeNotifierProxyProvider<UserManager, AdminUsersManager>(
           create: (_) => AdminUsersManager(),
