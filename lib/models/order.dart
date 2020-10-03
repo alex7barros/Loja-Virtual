@@ -31,6 +31,13 @@ class Order {
 
   final Firestore firestore = Firestore.instance;
 
+  DocumentReference get firestoreRef =>
+      firestore.collection('orders').document(orderId);
+
+  void updateFromDocument(DocumentSnapshot doc){
+    status = Status.values[doc.data['status'] as int];
+  }
+
   Future<void> save() async {
     firestore.collection('orders').document(orderId).setData(
         {
@@ -46,22 +53,22 @@ class Order {
             Function() get back {
             return status.index >= Status.transporting.index ?
                 (){
-              status = Status.values[status.index - 1];
-              firestore.collection('orders').document(orderId).updateData(
-                  {'status': status.index}
-              );
+                  status = Status.values[status.index - 1];
+                  firestoreRef.updateData({'status': status.index});
             } : null;
           }
 
           Function() get advance {
             return status.index <= Status.transporting.index ?
-                (){
-                  status = Status.values[status.index + 1];
-              firestore.collection('orders').document(orderId).updateData(
-                  {'status': status.index}
-              );
+                (){ status = Status.values[status.index + 1];
+                  firestoreRef.updateData({'status': status.index});
             } : null;
           }
+
+  void cancel(){
+    status = Status.canceled;
+    firestoreRef.updateData({'status': status.index});
+  }
 
   String orderId;
 
