@@ -3,7 +3,9 @@ import 'package:loja_virtual/common/custom_drawer/custom_drawer.dart';
 import 'package:loja_virtual/models/page_manager.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:loja_virtual/screens/base/products/components/products_screen.dart';
+import 'package:loja_virtual/screens/orders/components/orders_screen.dart';
 import 'package:provider/provider.dart';
+
 
 import 'admin_users/admin_users_screen.dart';
 import 'home/home_screen.dart';
@@ -30,12 +32,7 @@ class _BaseScreenState extends State<BaseScreen> {
             children: <Widget>[
               HomeScreen(),
               ProductsScreen(),
-              Scaffold(
-                drawer: CustomDrawer(),
-                appBar: AppBar(
-                  title: const Text('Home3'),
-                ),
-              ),
+              OrdersScreen(),
               Scaffold(
                 drawer: CustomDrawer(),
                 appBar: AppBar(
