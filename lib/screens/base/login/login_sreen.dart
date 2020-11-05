@@ -4,6 +4,8 @@ import 'package:loja_virtual/helpers/validators.dart';
 import 'package:loja_virtual/models/user.dart';
 import 'package:loja_virtual/models/user_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 
 class LoginSreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -69,46 +71,62 @@ class LoginSreen extends StatelessWidget {
                       },
                     ),
                     child,
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    SizedBox(
-                      height: 44,
-                      child: RaisedButton(
-                        onPressed: userManager.loading
-                            ? null
-                            : () {
-                                if (formkey.currentState.validate()) {
-                                  userManager.signIn(
-                                      user: User(
-                                          email: emailController.text,
-                                          password: passController.text),
-                                      onFail: (e) {
-                                        scaffoldKey.currentState
-                                            .showSnackBar(SnackBar(
-                                          content: Text('Falha ao entrar: $e'),
-                                          backgroundColor: Colors.red,
-                                        ));
-                                      },
-                                      onSuccess: () {
-                                        Navigator.of(context).pop();
-                                      });
-                                }
-                              },
-                        color: Theme.of(context).primaryColor,
-                        disabledColor:
-                            Theme.of(context).primaryColor.withAlpha(100),
-                        textColor: Colors.white,
-                        child: userManager.loading
-                            ? const CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation(Colors.white),
-                              )
-                            : const Text(
-                                'Entrar',
-                                style: TextStyle(fontSize: 18),
+                    RaisedButton(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      onPressed: userManager.loading ? null : (){
+                        if(formkey.currentState.validate()){
+                          userManager.signIn(
+                              user: User(
+                                  email: emailController.text,
+                                  password: passController.text
                               ),
+                              onFail: (e){
+                                scaffoldKey.currentState.showSnackBar(
+                                    SnackBar(
+                                      content: Text('Falha ao entrar: $e'),
+                                      backgroundColor: Colors.red,
+                                    )
+                                );
+                              },
+                              onSuccess: (){
+                                Navigator.of(context).pop();
+                              }
+                          );
+                        }
+                      },
+                      color: Theme.of(context).primaryColor,
+                      disabledColor: Theme.of(context).primaryColor
+                          .withAlpha(100),
+                      textColor: Colors.white,
+                      child: userManager.loading ?
+                      const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      ) :
+                      const Text(
+                        'Entrar',
+                        style: TextStyle(
+                            fontSize: 15
+                        ),
                       ),
+                    ),
+                    SignInButton(
+                      Buttons.Facebook,
+                      text: 'Entrar com Facebook',
+                      onPressed: (){
+                        userManager.facebookLogin(
+                            onFail: (e){
+                              scaffoldKey.currentState.showSnackBar(
+                                  SnackBar(
+                                    content: Text('Falha ao entrar: $e'),
+                                    backgroundColor: Colors.red,
+                                  )
+                              );
+                            },
+                            onSuccess: (){
+                              Navigator.of(context).pop();
+                            }
+                        );
+                      },
                     )
                   ],
                 );
@@ -116,9 +134,12 @@ class LoginSreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: FlatButton(
-                  onPressed: () {},
+                  onPressed: (){
+                  },
                   padding: EdgeInsets.zero,
-                  child: const Text('Esqueci minha senha'),
+                  child: const Text(
+                      'Esqueci minha senha'
+                  ),
                 ),
               ),
             ),
