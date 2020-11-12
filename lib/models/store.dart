@@ -62,6 +62,9 @@ class Store {
     if(period == null) return "Fechada";
     return '${period['from'].formatted()} - ${period['to'].formatted()}';
   }
+
+  String get cleanPhone => phone.replaceAll(RegExp(r"[^\d]"), "");
+
   void updateStatus(){
     final weekDay = DateTime.now().weekday;
     Map<String, TimeOfDay> period;

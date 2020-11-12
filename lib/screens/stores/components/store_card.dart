@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/common/custom_drawer/custom_icon_button.dart';
 import 'package:loja_virtual/models/store.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:map_launcher/map_launcher.dart';
 
 
 class StoreCard extends StatelessWidget {
@@ -23,8 +25,62 @@ class StoreCard extends StatelessWidget {
         default:
           return Colors.green;
       }
+
+    }
+    void showError(){
+      Scaffold.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Esta função não está disponível neste dispositivo'),
+              backgroundColor: Colors.red,
+            )
+      );
     }
 
+    Future<void> openPhone() async {
+      if(await canLaunch('tel:${store.cleanPhone}')){
+        launch('tel:${store.cleanPhone}');
+      } else {
+        showError();
+      }
+    }
+
+    Future<void > openMap() async {
+      try {
+        final availableMaps = await MapLauncher.installedMaps;
+
+        showModalBottomSheet(
+            context: context,
+            builder: (_) {
+              return SafeArea(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    for(final map in availableMaps)
+                      ListTile(
+                        onTap: (){
+                          map.showMarker(
+                            coords: Coords(store.address.lat, store.address.long),
+                            title: store.name,
+                            description: store.addressText,
+                          );
+                          Navigator.of(context).pop();
+                        },
+                        title: Text(map.mapName),
+                        leading: Image(
+                          image: map.icon,
+                          width: 30,
+                          height: 30,
+                        ),
+                      )
+                  ],
+                ),
+              );
+            }
+        );
+      } catch (e){
+        showError();
+      }
+    }
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       clipBehavior: Clip.antiAlias,
@@ -44,7 +100,7 @@ class StoreCard extends StatelessWidget {
                   child: Container(
                     decoration: const BoxDecoration(
                         color: Colors.white,
-                        borderRadius: const BorderRadius.only(
+                        borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(8)
                         )
                     ),
@@ -99,16 +155,12 @@ class StoreCard extends StatelessWidget {
                     CustomIconButton(
                       iconData: Icons.map,
                       color: primaryColor,
-                      onTap: (){
-
-                      },
+                      onTap: openMap,
                     ),
                     CustomIconButton(
                       iconData: Icons.phone,
                       color: primaryColor,
-                      onTap: (){
-
-                      },
+                      onTap: openPhone,
                     ),
                   ],
                 )
