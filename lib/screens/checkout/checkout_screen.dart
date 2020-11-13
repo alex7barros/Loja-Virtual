@@ -3,7 +3,9 @@ import 'package:loja_virtual/common/custom_drawer/price_card.dart';
 import 'package:loja_virtual/models/cart_manager.dart';
 import 'package:loja_virtual/models/checkout_manager.dart';
 import 'package:provider/provider.dart';
-import 'package:loja_virtual/models/page_manager.dart';
+
+import 'componets/credit_card_widget.dart';
+
 
 class CheckoutScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -46,6 +48,7 @@ class CheckoutScreen extends StatelessWidget {
             }
             return ListView(
               children: <Widget>[
+                CreditCardWidget(),
                 PriceCard(
                   buttonText: 'Finalizar Pedido',
                   onPressed: (){
