@@ -1,3 +1,4 @@
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/models/product.dart';
 import 'package:loja_virtual/models/product_manager.dart';
@@ -22,9 +23,11 @@ import 'models/stores_manager.dart';
 import 'models/user_manager.dart';
 import 'screens/address/address_screen.dart';
 
-void main() {
+void main() async{
   runApp(MyApp());
 
+  final response =  await CloudFunctions.instance.getHttpsCallable(functionName: 'helloWorld').call();
+  print(response.data);
 }
 
 class MyApp extends StatelessWidget {
