@@ -8,6 +8,7 @@ class CreditCard {
   String securityCode;
   String brand;
 
+
   // ignore: use_setters_to_change_properties
   void setHolder(String name) => holder = name;
   // ignore: use_setters_to_change_properties

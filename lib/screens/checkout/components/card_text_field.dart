@@ -51,7 +51,7 @@ class CardTextField extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w400,
                           color: Colors.white

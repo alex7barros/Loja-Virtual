@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:loja_virtual/models/address.dart';
 
 class User {
-
 
   User({this.email, this.password, this.name, this.id});
 
@@ -16,6 +18,7 @@ class User {
           document.data['address'] as Map<String, dynamic>);
     }
   }
+
   String id;
   String name;
   String email;
@@ -23,7 +26,9 @@ class User {
   String password;
 
   String confirmPassword;
+
   bool admin = false;
+
   Address address;
 
   DocumentReference get firestoreRef =>
@@ -32,8 +37,8 @@ class User {
   CollectionReference get cartReference =>
       firestoreRef.collection('cart');
 
-
-
+  CollectionReference get tokensReference =>
+      firestoreRef.collection('tokens');
 
   Future<void> saveData() async {
     await firestoreRef.setData(toMap());
@@ -49,12 +54,23 @@ class User {
         'cpf': cpf
     };
   }
+
   void setAddress(Address address){
     this.address = address;
     saveData();
   }
+
   void setCpf(String cpf){
     this.cpf = cpf;
     saveData();
   }
-} 
+
+  Future<void> saveToken() async {
+    final token = await FirebaseMessaging().getToken();
+    await tokensReference.document(token).setData({
+      'token': token,
+      'updatedAt': FieldValue.serverTimestamp(),
+      'platform': Platform.operatingSystem,
+    });
+  }
+}

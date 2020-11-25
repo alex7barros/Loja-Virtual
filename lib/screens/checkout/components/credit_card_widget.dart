@@ -2,10 +2,8 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:loja_virtual/models/credit_card.dart';
-
 import 'package:loja_virtual/screens/checkout/components/card_back.dart';
 import 'package:loja_virtual/screens/checkout/components/card_front.dart';
-
 import 'card_back.dart';
 import 'card_front.dart';
 

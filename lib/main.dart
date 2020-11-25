@@ -25,7 +25,8 @@ import 'screens/address/address_screen.dart';
 
 void main() async{
   runApp(MyApp());
-
+final response = await  CloudFunctions.instance.getHttpsCallable(functionName: "helloWorld").call();
+print(response.data);
 
 }
 

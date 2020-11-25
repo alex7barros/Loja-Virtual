@@ -21,27 +21,27 @@ class CartScreen extends StatelessWidget {
           }
 
           if(cartManager.items.isEmpty){
-            return const EmptyCard(
+            return EmptyCard(
               iconData: Icons.remove_shopping_cart,
               title: 'Nenhum produto no carrinho!',
             );
           }
+
           return ListView(
-            children:<Widget> [
-          Column(
-          children: cartManager.items.map(
-              (cartProduct) => CartTile(cartProduct)
-          ).toList(),
-          ),
-          PriceCard(
-          buttonText: 'Continuar para Entrega',
-          onPressed: cartManager.isCartValid ? (){
-            Navigator.of(context).pushNamed('/address');
-          } : null,
-          )
+            children: <Widget>[
+              Column(
+                children: cartManager.items.map(
+                        (cartProduct) => CartTile(cartProduct)
+                ).toList(),
+              ),
+              PriceCard(
+                buttonText: 'Continuar para Entrega',
+                onPressed: cartManager.isCartValid ? (){
+                  Navigator.of(context).pushNamed('/address');
+                } : null,
+              ),
             ],
           );
-
         },
       ),
     );
